@@ -1,3 +1,6 @@
 # Moltbot Docker
 
 Build artifacts and temporary files
+
+# Local env (Windows OPENCLAW_HOME path - do not commit if user-specific)
+.env
