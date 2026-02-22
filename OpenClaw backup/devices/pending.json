@@ -1,0 +1,24 @@
+{
+  "972c453b-8ff8-4c17-b07d-262d157e4ff3": {
+    "requestId": "972c453b-8ff8-4c17-b07d-262d157e4ff3",
+    "deviceId": "b396d72fe48122c9d300211f3f76d612e206f7e3034bea6f2d205cc745df5009",
+    "publicKey": "0g3DUi3XtIT6ADP_ujzRLEsAjgq0cf4GKOULoZO2EbE",
+    "displayName": "agent",
+    "platform": "linux",
+    "clientId": "gateway-client",
+    "clientMode": "backend",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "remoteIp": "172.18.0.2",
+    "silent": false,
+    "isRepair": false,
+    "ts": 1771601336377
+  }
+}
