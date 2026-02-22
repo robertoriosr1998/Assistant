@@ -277,6 +277,43 @@ If you need root/sudo to pull Docker images:
 
 3. Alternatively, use `sudo` when running the install script
 
+### Python packages (e.g. `requests`) inside the container
+
+The default image does not include Python or allow installing pip packages at runtime. To let OpenClaw (or skills) use packages like `requests` inside the container, use one of these approaches.
+
+**Option 1 – Custom image with Python and packages (recommended)**
+
+Build an image that extends the official one and installs Python plus the packages you need:
+
+```bash
+# From this repo directory
+docker build -f Dockerfile.python-packages -t openclaw-docker:with-python .
+```
+
+Then point Compose at your image: in `docker-compose.yml`, set the image for `openclaw-gateway` and `openclaw-cli`:
+
+```yaml
+services:
+  openclaw-gateway:
+    image: openclaw-docker:with-python   # was: ghcr.io/phioranex/openclaw-docker:latest
+    # ... rest unchanged
+  openclaw-cli:
+    image: openclaw-docker:with-python
+    # ... rest unchanged
+```
+
+To add more packages, edit `Dockerfile.python-packages`: add them to the `pip3 install` line (or uncomment the second `RUN pip3 install` and list packages there), then rebuild the image.
+
+**Option 2 – One-off install in a running container**
+
+If your container already has Python/pip (e.g. from a skill or Homebrew), you can install packages as the `node` user so they persist only for that container:
+
+```bash
+docker exec -u node openclaw-gateway pip3 install --user requests
+```
+
+Installs go to `/home/node/.local` and are lost when the container is recreated unless you use a volume for that path or rebuild a custom image (Option 1).
+
 ### Installing Skills (npm global packages)
 
 The container is configured to allow the `node` user to install global npm packages without permission issues. You can install skills using:

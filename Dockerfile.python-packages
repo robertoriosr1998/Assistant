@@ -1,0 +1,29 @@
+# Extend the OpenClaw image with Python and common packages (e.g. requests).
+#
+# Using the pre-built image from the registry:
+#   docker build -f Dockerfile.python-packages -t openclaw-docker:with-python .
+#
+# Using a locally built image (after building the main Dockerfile first):
+#   docker build -t openclaw-docker:latest .
+#   docker build -f Dockerfile.python-packages --build-arg BASE_IMAGE=openclaw-docker:latest -t openclaw-docker:with-python .
+#
+# Then in docker-compose.yml use: image: openclaw-docker:with-python
+
+ARG BASE_IMAGE=ghcr.io/phioranex/openclaw-docker:latest
+FROM ${BASE_IMAGE}
+
+USER root
+
+# Install Python and pip, then install packages so they're available inside the container
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-venv \
+    && pip3 install --break-system-packages --no-cache-dir requests \
+    && rm -rf /var/lib/apt/lists/*
+
+# Optional: install more packages (uncomment and add as needed)
+# RUN pip3 install --break-system-packages --no-cache-dir requests httpx aiohttp
+
+USER node
+# Base image ENTRYPOINT/CMD are inherited
